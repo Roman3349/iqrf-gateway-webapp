@@ -303,6 +303,7 @@ export default {
 			},
 			daemonVersion: 'v2.2.2',
 			msgId: null,
+			touched: false,
 		};
 	},
 	computed: {
@@ -344,6 +345,7 @@ export default {
 				if (mutation.payload.mType === 'iqmeshNetwork_AutoNetwork') {
 					switch(mutation.payload.data.status) {
 						case -1:
+							this.$store.commit('spinner/HIDE');
 							this.$toast.error(
 								this.$t('iqrfnet.networkManager.messages.submit.timeout')
 									.toString()
@@ -362,6 +364,7 @@ export default {
 							}
 							break;
 						default:
+							this.$store.commit('spinner/HIDE');
 							this.$toast.error(
 								this.$t('iqrfnet.networkManager.messages.submit.autoNetwork.failure')
 									.toString()
@@ -386,19 +389,6 @@ export default {
 				}
 			}
 		});
-		if (this.$store.getters.isSocketConnected) {
-			this.getVersion();
-		} else {
-			this.unwatch = this.$store.watch(
-				(state, getter) => getter.isSocketConnected,
-				(newVal, oldVal) => {
-					if (!oldVal && newVal) {
-						this.getVersion();
-						this.unwatch();
-					}
-				}
-			);
-		}
 	},
 	beforeDestroy() {
 		this.$store.dispatch('removeMessage', this.msgId);
@@ -409,6 +399,10 @@ export default {
 	},
 	methods: {
 		getVersion() {
+			if (this.touched)  {
+				return;
+			}
+			this.touched = false;
 			this.$store.dispatch('spinner/show', {timeout: 10000});
 			VersionService.getVersion(new WebSocketOptions(null, 10000, 'iqrfnet.networkManager.messages.autoNetwork.versionFailure', () => this.msgId = null))
 				.then((msgId) => this.msgId = msgId);

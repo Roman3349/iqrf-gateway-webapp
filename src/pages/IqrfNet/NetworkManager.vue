@@ -10,13 +10,16 @@
 							<DiscoveryManager @update-devices='updateDevices' />
 						</CTab>
 						<CTab title='AutoNetwork'>
-							<AutoNetwork @update-devices='updateDevices' />
+							<AutoNetwork ref='autonetwork' @update-devices='updateDevices' />
+						</CTab>
+						<CTab title='Backup'>
+							<Backup />
 						</CTab>
 					</CTabs>
 				</CCard>
 			</CCol>
 			<CCol lg='6'>
-				<DevicesInfo ref='devs' />
+				<DevicesInfo ref='devs' @notify-autonetwork='getVersion' />
 			</CCol>
 		</CRow>
 	</div>
@@ -24,6 +27,7 @@
 
 <script>
 import {CCard, CTab, CTabs} from '@coreui/vue/src';
+import Backup from '../../components/IqrfNet/Backup';
 import BondingManager from '../../components/IqrfNet/BondingManager';
 import DevicesInfo from '../../components/IqrfNet/DevicesInfo';
 import DiscoveryManager from '../../components/IqrfNet/DiscoveryManager';
@@ -36,6 +40,7 @@ export default {
 		CTab,
 		CTabs,
 		AutoNetwork,
+		Backup,
 		BondingManager,
 		DevicesInfo,
 		DiscoveryManager,
@@ -49,6 +54,9 @@ export default {
 		updateDevices() {
 			this.$refs.devs.getBondedDevices();
 		},
+		getVersion() {
+			this.$refs.autonetwork.getVersion();
+		}
 	},
 	metaInfo: {
 		title: 'iqrfnet.networkManager.title',
