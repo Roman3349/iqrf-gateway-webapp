@@ -251,6 +251,9 @@ export default Vue.extend({
 							break;
 					}
 				} else if (mutation.payload.mType === 'messageError') {
+					if (mutation.payload.data.msgId !== this.msgId) {
+						return;
+					}
 					this.$store.dispatch('spinner/hide');
 					this.$toast.error(
 						this.$t('iqrfnet.networkManager.messages.submit.invalidMessage')

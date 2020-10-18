@@ -371,7 +371,8 @@ export default {
 							);
 							break;
 					}
-				} else if (mutation.payload.mType === 'messageError') {
+				} else if (mutation.payload.mType === 'messageError' &&
+							mutation.payload.data.msgId === this.msgId) {
 					this.$store.commit('spinner/HIDE');
 					this.$toast.error(
 						this.$t('iqrfnet.networkManager.messages.submit.invalidMessage')
