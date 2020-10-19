@@ -1024,7 +1024,7 @@
 				}
 			},
 			"backup": {
-				"title": "IQRF Backup",
+				"title": "Network backup",
 				"form": {
 					"coordinator": "Coordinator",
 					"node": "Node",
@@ -1045,7 +1045,7 @@
 				}
 			},
 			"restore": {
-				"title": "IQRF Restore",
+				"title": "Coordinator restore",
 				"form": {
 					"address": "Node address",
 					"backupFile": "Backup file",
